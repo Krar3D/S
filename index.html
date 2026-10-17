@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المبسط الشامل - اقتصاديات النقود والبنوك</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+
+        :root {
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sec: #334155;
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --street: #059669;
+            --street-light: #d1fae5;
+            --warn: #d97706;
+            --warn-light: #fef3c7;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --border: #e2e8f0;
+            --box-bg: #f8fafc;
+        }
+
+        body.dark-mode {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sec: #cbd5e1;
+            --primary: #3b82f6;
+            --primary-light: #1e3a8a;
+            --street: #10b981;
+            --street-light: #064e3b;
+            --warn: #f59e0b;
+            --warn-light: #78350f;
+            --purple: #8b5cf6;
+            --purple-light: #4c1d95;
+            --border: #334155;
+            --box-bg: #0f172a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* النافذة العائمة الصغيرة والمدمجة */
+        .top-bar {
+            background: var(--card-bg);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 5px;
+            z-index: 100;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .header-row h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .top-actions button {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--box-bg);
+            color: var(--text-sec);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+        }
+
+        .progress-wrapper {
+            background: var(--border);
+            height: 6px;
+            border-radius: 99px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--street));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-sec);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 5px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--box-bg);
+            color: var(--text-sec);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* تصميم البطاقات */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+            transition: transform 0.2s, border-color 0.3s;
+        }
+
+        .card.mastered {
+            border-color: var(--street);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .content-box {
+            background: var(--box-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            line-height: 1.9;
+            font-size: 1.02rem;
+            color: var(--text-sec);
+            border: 1px solid var(--border);
+            transition: opacity 0.3s, filter 0.3s;
+        }
+
+        .content-box.blurred {
+            filter: blur(8px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .academic-view ul, .academic-view ol {
+            margin: 0;
+            padding-right: 20px;
+        }
+
+        .academic-view li {
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            font-weight: 800;
+            color: var(--primary);
+            margin: 12px 0 6px 0;
+            display: block;
+            border-right: 3px solid var(--primary);
+            padding-right: 8px;
+        }
+
+        .street-view {
+            display: none;
+            background: var(--street-light);
+            color: var(--text-main);
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid var(--street);
+            font-weight: 500;
+        }
+
+        .diagram-view {
+            display: none;
+            padding: 15px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 8px;
+            margin-top: 12px;
+            border: 2px dashed var(--purple);
+            font-size: 0.95rem;
+        }
+
+        /* الكلمات المفتاحية (الفراغات الذكية) */
+        .kw {
+            font-weight: 700;
+            color: var(--primary);
+            padding: 0 3px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .cloze-active .kw {
+            background-color: var(--warn);
+            color: transparent;
+            cursor: pointer;
+            user-select: none;
+            padding: 2px 10px;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .cloze-active .kw::after {
+            content: "؟";
+            color: #fff;
+            font-size: 0.9rem;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cloze-active .kw.revealed {
+            background-color: var(--street-light);
+            color: var(--street);
+        }
+
+        .cloze-active .kw.revealed::after {
+            content: "";
+        }
+
+        .math-block {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed var(--primary);
+            margin: 10px 0;
+            direction: ltr;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            overflow-x: auto;
+        }
+
+        table.eco-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.92rem;
+            text-align: right;
+            background: var(--card-bg);
+        }
+
+        table.eco-table th, table.eco-table td {
+            border: 1px solid var(--border);
+            padding: 8px 10px;
+        }
+
+        table.eco-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        button.ctrl-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        button.ctrl-btn:active { transform: scale(0.97); }
+
+        .btn-acad { background: var(--primary); color: #fff; }
+        .btn-str { background: var(--street); color: #fff; }
+        .btn-cloze { background: var(--warn); color: #fff; }
+        .btn-diag { background: var(--purple); color: #fff; }
+        .btn-hide { background: var(--border); color: var(--text-main); }
+        .btn-done { background: transparent; border: 2px solid var(--street) !important; color: var(--street); }
+        .card.mastered .btn-done { background: var(--street); color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- النافذة العائمة المدمجة -->
+    <div class="top-bar">
+        <div class="header-row">
+            <h1>💰 المبسط في النقود والبنوك</h1>
+            <div class="top-actions">
+                <button onclick="toggleDarkMode()">🌙 ليلي</button>
+                <button onclick="resetProgress()">🔄 تصفير</button>
+            </div>
+        </div>
+        <div class="progress-wrapper">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text">
+            <span>نسبة إتقان المحاضرة:</span>
+            <span id="progressCount">0 / 9 بطاقات (0%)</span>
+        </div>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterCards('all', this)">الكل (9)</button>
+            <button class="filter-btn" onclick="filterCards('unmastered', this)">غير محفوظة</button>
+            <button class="filter-btn" onclick="filterCards('mastered', this)">تم حفظها ✅</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 1: النظرية الكمية الحديثة للنقود (ميلتون فريدمان) -->
+    <div class="card" id="mcard1">
+        <div class="card-header">
+            <h2 class="card-title">1. النظرية الكمية الحديثة للنقود (ميلتون فريدمان)</h2>
+            <span class="badge">ص 30 - 31</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li>قام الاقتصادي <span class="kw">ميلتون فريدمان</span> بإعادة صياغة نظرية الكمية في الطلب على النقود، وتناول الطلب على النقود كأصل في:
+                        <br>1. <span class="kw">حافظة الثروة الفردية</span> لدى أفراد القطاع العائلي (الحائزين النهائيين للثروة).
+                        <br>2. <span class="kw">حافظة رأس المال</span> لدى أفراد ومؤسسات القطاع الإنتاجي.
+                    </li>
+                    <li><b>لماذا يحتفظ الأفراد والمؤسسات بالنقود؟</b>
+                        <br>- <b>الأفراد:</b> باعتبارها <span class="kw">أصل السيولة</span> الذي يؤدي الوظائف التقليدية للنقود.
+                        <br>- <b>مؤسسات الإنتاج:</b> كأحد أشكال <span class="kw">رأس المال</span> المستخدم في العملية الإنتاجية.
+                    </li>
+                    <li><b>دالة الطلب على النقود بصياغة فريدمان:</b>
+                        <div class="math-block">
+                            Md / P = f( yp<sup>+</sup> , rb<sup>-</sup> , rs<sup>-</sup> , rm<sup>+</sup> , pe<sup>-</sup> , ... )
+                        </div>
+                    </li>
+                    <li><b>تفسير رموز المعادلة:</b>
+                        <br>- <b>Md/P:</b> <span class="kw">الطلب الحقيقي</span> على النقود.
+                        <br>- <b>yp (الدخل الدائم):</b> هو <span class="kw">القيمة الحالية المخصومة</span> لتدفقات الدخل المتوقعة لفترة طويلة في المستقبل.
+                        <br>- <b>rb:</b> العائد المتوقع من <span class="kw">السندات</span>.
+                        <br>- <b>rs:</b> العائد المتوقع من <span class="kw">الأسهم</span>.
+                        <br>- <b>rm:</b> العائد المتوقع من <span class="kw">النقود</span> (المنافع والخدمات من الاحتفاظ بالنقد حاضراً أو في الحسابات الجارية).
+                        <br>- <b>pe (معدل التضخم المتوقع):</b> نسبة التغير في أسعار السلع، وهو بمثابة <span class="kw">ضريبة</span> على الاحتفاظ بالنقود.
+                    </li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                فريدمان يكول: الناس والشركات ليش يضمون كاش (نقود)؟<br>
+                - <b>العوائل (الأفراد):</b> يضمون الفلوس كـ "سيولة" جاهزة للصرف اليومي ضمن ثروتهم.<br>
+                - <b>الشركات (المصانع):</b> يعتبرون الكاش جزء من "رأس المال" اللي يمشون بيه الشغل والإنتاج.<br>
+                والطلب على الفلوس ما يعتمد على راتبك مال هذا الشهر بس، وإنما يعتمد على <b>"الدخل الدائم" (yp)</b> يعني معدلك المالي ومستقبلك الوظيفي على المدى الطويل!
+            </div>
+            <div class="diagram-view">
+                <b>⚡ مخطط معادلة فريدمان السريع:</b><br>
+                • <b>يزيد الطلب على النقود (+) مع:</b> الدخل الدائم (yp) + عائد ومنافع النقود نفسها (rm).<br>
+                • <b>يقل الطلب على النقود (-) مع:</b> عائد السندات (rb) + عائد الأسهم (rs) + التضخم المتوقع (pe).
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard1', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard1', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard1')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-diag" onclick="toggleDiag('mcard1')">⚡ ملخص</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard1')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard1')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 2: آلية المفاضلة والعلاقات في دالة فريدمان -->
+    <div class="card" id="mcard2">
+        <div class="card-header">
+            <h2 class="card-title">2. المفاضلة بين البدائل وتأثير التضخم (فريدمان)</h2>
+            <span class="badge">ص 31</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>حرية الاختيار والمفاضلة:</b> أكد فريدمان أن للفرد حرية في اختيار البديل الذي يحتفظ فيه بثروته، والمفاضلة بين الاحتفاظ بنقد أو بدائل أخرى تعتمد على <span class="kw">الفروقات بين العوائد</span> على هذه البدائل والعائد من الاحتفاظ بالنقد.</li>
+                    <li><b>العلاقة مع عوائد السندات (rb) والأسهم (rs) [علاقة عكسية -]:</b> إذا ارتفعت العوائد على السندات والأسهم مقارنة بالعائد من النقود، فإن المرء يفضل توظيف نقوده في هذه البدائل مما <span class="kw">يقلل من طلبه على النقد</span>.</li>
+                    <li><b>العلاقة مع العائد من النقود (rm) [علاقة طردية +]:</b> يعكس <span class="kw">المنافع والخدمات</span> التي يحصل عليها المرء من احتفاظه بالنقد حاضراً لديه أو في حساباته الجارية.</li>
+                    <li><b>تأثير معدل التضخم المتوقع (pe) [علاقة عكسية -]:</b> يعكس نسبة التغير في أسعار السلع ويمثل <span class="kw">ضريبة على الاحتفاظ بالنقود</span>؛ فإذا توقع المرء ارتفاع الأسعار مستقبلاً وتناقص <span class="kw">القوة الشرائية</span> للنقود، فإنه سيباشر بإنفاقها واقتناء <span class="kw">سلعاً بدلاً عنها</span>، مما يعني <span class="kw">تناقص الطلب على النقود</span> ومن ثم <span class="kw">زيادة معدل دورانها</span>.</li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                أنت عندك 10 ملايين دينار، تبقيهن كاش بالبيت لو تشغلهن؟<br>
+                1. إذا شفت الأسهم أو السندات تنطي أرباح عالية، راح تشتري أسهم وتقلل الكاش اللي بجيبك (علاقة عكسية).<br>
+                2. <b>ليش التضخم (pe) يعتبر "ضريبة"؟</b> لأن إذا سمعت الأسعار راح تطير الشهر الجاي والفلوس تفقد قيمتها، ما راح تبقي كاش بيدك! راح تركض تشتري بيها غراض أو ذهب أو عقار. يعني قللت طلبك عالنقود وزيدت سرعة تداولها (دورانها) بالسوق!
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard2', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard2', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard2')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard2')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard2')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 3: الاختلاف بين نظرية كينز ونظرية فريدمان -->
+    <div class="card" id="mcard3">
+        <div class="card-header">
+            <h2 class="card-title">3. الاختلاف بين نظرية كينز ونظرية فريدمان (5 نقاط)</h2>
+            <span class="badge">سؤال امتحاني مهم - ص 31 و 32</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ol>
+                    <li><b>نوع الدخل المعتمد:</b> فريدمان يرى أن الطلب على النقود لا يعتمد إلا على <span class="kw">الدخل الدائم</span>، في حين أن كينز استخدم <span class="kw">الدخل الحالي</span>.</li>
+                    <li><b>دور سعر الفائدة:</b> فريدمان لا يرى دوراً لسعر الفائدة للتأثير في الطلب على النقود (كما افترض <span class="kw">فيشر</span> في الكلاسيكية)، أما كينز فأضاف سعر الفائدة كأهم محدد للطلب على النقود من خلال <span class="kw">دافع المضاربة</span>.</li>
+                    <li><b>درجة دوران النقود والنشاط الاقتصادي:</b> الكنزية ترى أن درجة دوران النقود <span class="kw">ليست ثابتة</span> وتتغير تبعاً لسعر الفائدة. أما النظرية النقدية (فريدمان) فترى في استقرار الطلب على النقود <span class="kw">استقراراً في درجة دوران النقود</span>، ويترتب على ذلك أن التغيرات في <span class="kw">عرض النقود</span> هي التي تحدد حجم النشاط الاقتصادي.</li>
+                    <li><b>التقلبات في دالة الطلب:</b> رأى كينز أن التقلبات في سعر الفائدة تؤدي لتقلبات في الطلب على النقود لأجل المضاربة ومن ثم في دالة الطلب. من جانب آخر يلعب سعر الفائدة دوراً في دالة الطلب التي اقترحها فريدمان.</li>
+                    <li><b>دور السياسة الحكومية (نقدية ومالية):</b> ينوه فريدمان بأهمية أن تتسم السياسة الحكومية <span class="kw">بالاستقرار</span>، في حين يرى كينز أنها مطالبة <span class="kw">بالتصدي للتقلبات</span> في جانب الطلب على النقود لإبطال عواقبه السلبية على الاقتصاد.</li>
+                </ol>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية (مقارنة راس براس):</b><br>
+                - <b>فريدمان:</b> يحب الاستقرار والمدى الطويل؛ يركز على "الدخل الدائم"، ويكول سرعة دوران الفلوس مستقرة، والحكومة لازم تكون سياستها ثابتة ومستقرة وما تتدخل كل شوية.<br>
+                - <b>كينز:</b> يركز على اللحظة الحالية والتقلبات؛ يعتمد على "الدخل الحالي"، ويربط كل شي بـ "سعر الفائدة والمضاربة"، ويكول سرعة دوران الفلوس متقلبة، فلازم الحكومة تتدخل دائماً حتى تعالج التقلبات!
+            </div>
+            <div class="diagram-view">
+                <table class="eco-table">
+                    <thead>
+                        <tr><th>وجه المقارنة</th><th>ميلتون فريدمان (النقدية)</th><th>جون ماينارد كينز</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>الدخل</b></td><td>الدخل الدائم</td><td>الدخل الحالي</td></tr>
+                        <tr><td><b>سعر الفائدة</b></td><td>لا يؤثر (مثل فيشر)</td><td>أهم محدد (دافع المضاربة)</td></tr>
+                        <tr><td><b>دوران النقود</b></td><td>مستقر (عرض النقود يحدد النشاط)</td><td>غير ثابت (يتغير مع الفائدة)</td></tr>
+                        <tr><td><b>السياسة الحكومية</b></td><td>يجب أن تتسم بالاستقرار</td><td>مطالبة بالتصدي للتقلبات</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard3', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard3', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard3')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-diag" onclick="toggleDiag('mcard3')">⚡ جدول مقارنة</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard3')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard3')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 4: النظم النقدية وقاعدة النقد السلعية -->
+    <div class="card" id="mcard4">
+        <div class="card-header">
+            <h2 class="card-title">4. النظم النقدية: المفهوم، الخصائص، والقاعدة السلعية</h2>
+            <span class="badge">ص 33</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>مفهوم النظام النقدي:</b> مجموعة القواعد التي تتضمن تعيين <span class="kw">وحدة التحاسب النقدية</span> وتلك التي تضبط <span class="kw">إصدار وسحب</span> النقد الأساسي أو الانتهائي من التداول.</li>
+                    <li><b>خصائص النظام النقدي:</b>
+                        <br>1. <b>نظام اجتماعي:</b> أدوات اقتصادية لتسهيل الإنتاج وتبادل المنتجات، تعكس وضع <span class="kw">الاقتصاد الذي وجدت لخدمته</span> (فالنظام النقدي في النظام الرأسمالي يختلف عن الاشتراكي وعن المجتمع الإسلامي).
+                        <br>2. <b>نظام تاريخي:</b> أي <span class="kw">يتطور ويتغير</span> حسب تطور وتغير النظام الاقتصادي والاجتماعي الذي ينتمي إليه.
+                    </li>
+                    <li><b>أولاً: قاعدة النقد السلعية (النظام المعدني):</b>
+                        هو ذلك النظام الذي يحدد في ظله القانون النقدي <span class="kw">سعراً ثابتاً</span> مقاساً بوحدة التحاسب النقدية للوحدة من هذه السلعة (أو السلع) التي يقع الاختيار عليها كقاعدة للنقد. وينقسم إلى: (1) نظام المعدن الواحد، و(2) نظام المعدنين.
+                    </li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                <b>النظام النقدي</b> هو "دستور الفلوس" بالدولة: يحدد شنو عملتنا (دينار، دولار..) وشلون نطبعها ونسحبها من السوق.<br>
+                وهو <b>اجتماعي</b> (يتفصل على قياس اقتصاد الدولة سواء رأسمالي أو إسلامي) و<b>تاريخي</b> (يتطور ويه الزمن؛ بدأ بالذهب والفضة كـ "قاعدة سلعية" ووصل اليوم للورق الإلزامي).
+            </div>
+            <div class="diagram-view">
+                <b>⚡ شجرة النظم النقدية في المحاضرة:</b><br>
+                1️⃣ <b>قاعدة النقد السلعية (المعدني):</b><br>
+                &nbsp;&nbsp;&nbsp;• <b>نظام المعدن الواحد (الذهب):</b> (أ- المسكوكات الذهبية | ب- السبائك الذهبية | ج- الصرف بالذهب).<br>
+                &nbsp;&nbsp;&nbsp;• <b>نظام المعدنين:</b> (الذهب والفضة معاً - قانون جريشام).<br>
+                2️⃣ <b>قاعدة النقد الائتمانية:</b> (نظام النقد الورقي الإلزامي غير القابل للتحويل).
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard4', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard4', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard4')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-diag" onclick="toggleDiag('mcard4')">⚡ شجرة النظم</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard4')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard4')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 5: نظام المسكوكات الذهبية -->
+    <div class="card" id="mcard5">
+        <div class="card-header">
+            <h2 class="card-title">5. أ- نظام المسكوكات الذهبية (الشروط، المزايا، العيوب)</h2>
+            <span class="badge">ص 33 - 34</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>مفهومه:</b> الشكل الأول لقاعدة الذهب (ضمن نظام المعدن الواحد)، تداولت فيه <span class="kw">المسكوكات الذهبية</span> بمفردها أو بجانبها أوراق نائبة أو اختيارية، وكانت المسكوكات هي <span class="kw">النقد الأساسي والنهائي</span>.</li>
+                </ul>
+                <span class="sub-title">شروط تشغيل نظام المسكوكات الذهبية (5 شروط):</span>
+                <ol>
+                    <li>تعيين <span class="kw">نسبة ثابتة</span> بين وحدة النقد وكمية معينة من الذهب ذات وزن وعيار معين.</li>
+                    <li>حرية كاملة لسك الذهب بدون مقابل أو بتكلفة طفيفة (<span class="kw">حرية السك</span>).</li>
+                    <li>حرية كاملة لصهر المسكوكات الذهبية (<span class="kw">حرية الصهر</span>).</li>
+                    <li>حرية كاملة <span class="kw">لتحويل العملات الأخرى</span> المتداولة إلى نقود ذهبية بالسعر القانوني الثابت.</li>
+                    <li>حرية <span class="kw">استيراد وتصدير</span> الذهب.</li>
+                </ol>
+                <span class="sub-title">مزايا نظام المسكوكات الذهبية:</span>
+                <ul>
+                    <li>يسمح بتداول النقود الأخرى بجانبه مما يؤدي إلى <span class="kw">توسع حجم الكتلة النقدية</span> المتداولة.</li>
+                    <li><span class="kw">نظام عالمي</span> شمل كل دول العالم ولفترة طويلة.</li>
+                    <li>إلزامية بتساوي <span class="kw">القيمة الشرائية</span> للنقود والذهب.</li>
+                </ul>
+                <span class="sub-title">عيوب نظام المسكوكات الذهبية:</span>
+                <ul>
+                    <li>اتجاهه نحو <span class="kw">احتكار الذهب</span> والسيطرة على السوق (لأنه يعني وحدة السوق العالمية).</li>
+                    <li>لم يتوسع <span class="kw">إنتاج الذهب</span> أمام توسع إنتاجية السلع والخدمات مما أدى إلى ارتفاع الأسعار.</li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                بنظام المسكوكات، الليرات الذهبية هي اللي تفتر بجيب الناس بالسوق! وحتى يشتغل هذا النظام صح، لازم تتوفر <b>"الحريات الأربعة + نسبة ثابتة"</b>: بكيفك تودي سبيكة للمعمل يسووها ليرات (سك)، بكيفك تموع الليرات تسويها سبيكة (صهر)، بكيفك تبدل الورق بذهب (تحويل)، وبكيفك تدخل وتطلع ذهب من الحدود (استيراد وتصدير).<br>
+                <b>عيبه القاتل:</b> المصانع كامت تنتج بضائع هواي، بس مناجم الذهب ما تلحك تطلع ذهب بنفس السرعة!
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard5', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard5', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard5')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard5')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard5')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 6: نظام السبائك الذهبية ومؤتمر جنوا -->
+    <div class="card" id="mcard6">
+        <div class="card-header">
+            <h2 class="card-title">6. ب- نظام السبائك الذهبية ومؤتمر (جنوا) 1925</h2>
+            <span class="badge">ص 34 - 35</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>أسباب ظهوره:</b> تزايد حاجات الأفراد للنقود دفع البنوك لإصدار نقود <span class="kw">بغطاء نسبي</span>. ومع قدوم <span class="kw">الحرب العالمية الأولى</span> ارتفعت نفقات شراء الأسلحة وتمويل الحرب، مما حث (إنجلترا، فرنسا، إيطاليا، وأمريكا) إلى عقد مؤتمر في <span class="kw">(جنوا)</span>.</li>
+                    <li><b>نتائج مؤتمر جنوا:</b>
+                        <br>1. إلغاء نظام المسكوكات الذهبية وتبني <span class="kw">نظام السبائك الذهبية</span> بداية من عام <span class="kw">1925</span>.
+                        <br>2. وضع <span class="kw">شروط</span> لعملية سك وصهر العملة.
+                        <br>3. وضع <span class="kw">شروط</span> على عملية تحويل النقود الورقية إلى ذهب.
+                    </li>
+                    <li><b>أوجه الاختلاف بين نظام السبائك ونظام المسكوكات:</b>
+                        <br>1. في ظل السبائك لا تتداول المسكوكات الذهبية بل <span class="kw">تسحب من التداول</span>، وتستمر السلطات النقدية في شراء سبائك الذهب بسعر ثابت، وتحتفظ <span class="kw">البنوك المركزية</span> بالذهب في خزائنها وتدفع للبائعين نقوداً ورقية أو تفتح حسابات جارية لهم.
+                        <br>2. لم تعد هناك حرية كاملة لتحويل النقود الأخرى إلى ذهب بل <span class="kw">قيدت هذه الحرية</span> ووضع لها شروط.
+                    </li>
+                    <li><b>فائدة هذا النظام:</b> ساعد على تركيز <span class="kw">الاحتياطي الذهبي</span> في أيدي البنوك المركزية والحكومات، مما أتاح إدخال نوع من <span class="kw">الإدارة النقدية</span> وممارسة الرقابة على حركات الذهب.</li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                من صارت الحرب العالمية الأولى، الدول افلست وما عدها ذهب يكفي توزع ليرات للناس! فاجتمعوا بمؤتمر <b>(جنوا) سنة 1925</b> وكالوا: "بعد ماكو ليرات ذهب تفتر بيد الناس! نسحب الذهب كله نضمه بقاصات البنك المركزي على شكل <b>سبائك</b>، وننطي للناس ورق يتعاملون بيه، واللي يريد يحول الورق لذهب نحطله شروط تعجيزية (لازم يشتري سبيكة كاملة مو ليرة صغيرة)".
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard6', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard6', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard6')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard6')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard6')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 7: نظام الصرف بالذهب + تقييم نظام المعدن الواحد -->
+    <div class="card" id="mcard7">
+        <div class="card-header">
+            <h2 class="card-title">7. ج- نظام الصرف بالذهب + تقييم نظام المعدن الواحد</h2>
+            <span class="badge">ص 35 - 37</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <span class="sub-title">ج- نظام الصرف بالذهب:</span>
+                <ul>
+                    <li><b>مفهومه:</b> الوحدة النقدية لا تتحدد مباشرة بالذهب، بل ترتبط به <span class="kw">ارتباطاً غير مباشر</span> بنسبة ثابتة مع عملة بلد آخر يسير على نظام الذهب. نشأ نتيجة علاقات التبعية السياسية والاقتصادية بين دولة صغرى ودولة كبرى (مثل <span class="kw">الهند ومصر</span> في علاقتهما بإنجلترا).</li>
+                    <li><b>مزاياه (5):</b> 1) التمتع بمزايا الذهب دون الاحتفاظ باحتياطي ذهب مباشر (بل الاحتفاظ باحتياطيات أجنبية كأذونات وسندات خزانة الدولة المتبوعة). 2) استثمار جانب كبير من الاحتياطيات في <span class="kw">مشروعات استثمارية</span>. 3) تثبيت أسعار العملات الصغيرة (<span class="kw">سعر صرف ثابت</span>). 4) تبقى عملة البلد التابع <span class="kw">قوية دائماً</span>. 5) ربح تكاليف <span class="kw">تخزين الذهب وحراسته</span> وصهره.</li>
+                    <li><b>عيوبه (3):</b> 1) خلق <span class="kw">تبعية نقدية</span> تقود لتبعية سياسية واقتصادية. 2) تعرض الدولة المتبوعة <span class="kw">لأزمات</span> ينعكس على الدولة التابعة. 3) المساس <span class="kw">بسيادة البلد التابع</span>.</li>
+                </ul>
+                <span class="sub-title">تقييم نظام المعدن الواحد بشكل عام:</span>
+                <ul>
+                    <li><b>مزايا نظام المعدن الواحد (3):</b> 1) يقود إلى <span class="kw">استقرار الأسعار العالمية</span> بالأجل الطويل واتساع التجارة الدولية وانتقال رؤوس الأموال. 2) يؤمن ضمنياً ضد <span class="kw">مخاطر الأزمات الاقتصادية</span> لكفاءة توزيع الموارد. 3) يعمل <span class="kw">دون تدخل الحكومات</span> (دورها متابعة وتطبيق القانون).</li>
+                    <li><b>عيوب نظام المعدن الواحد (3):</b> 1) أخطاء إدارة نظام نقدي مستقل أقل ضرراً من أضرار ارتباط الاقتصاد المحلي بنظام الذهب الدولي. 2) لا يحقق استقرار الأسعار واقعياً لأن إنتاج الذهب <span class="kw">لا يتمتع بالمرونة</span> للتجاوب تلقائياً مع الطلب. 3) استقرار الصرف يقتصر على <span class="kw">الدول المتقدمة</span> أما النامية فتعرضت لتقلبات كبيرة.</li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                <b>نظام الصرف بالذهب:</b> دولة فقيرة أو مستعمرة (مثل مصر والهند قبل) ما عدها ذهب، فتربط عملتها بعملة دولة جبيرة عدها ذهب (إنجلترا). الفائدة؟ توفر فلوس حراسة وخزن الذهب وتستفاد من الفوائد. الضرر؟ تفقد سيادتها، وإذا عطس اقتصاد إنجلترا، مصر والهند يتمرضون!<br>
+                <b>عيب الذهب العام:</b> الذهب معدن بالطبيعة ما بيه "مرونة"، يعني ما نكدر نصنعه بالمختبر كلما زاد الطلب عليه!
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard7', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard7', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard7')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard7')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard7')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 8: نظام المعدنين وقانون جريشام -->
+    <div class="card" id="mcard8">
+        <div class="card-header">
+            <h2 class="card-title">8. (2) نظام المعدنين (الذهب والفضة) وقانون جريشام</h2>
+            <span class="badge">سؤال امتحاني مهم - ص 37</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>مفهومه:</b> النظام الذي تحددت في ظله قيمة الوحدة النقدية بالنسبة لمعدنين هما <span class="kw">الذهب والفضة</span>، بنفس شروط نظام المعدن الواحد.</li>
+                    <li><b>شرط استقراره:</b> العامل الأساسي في استقرار تداول المعدنين معاً هو استمرار تعادل <span class="kw">النسبة بين قيمتهما السوقية</span> و<span class="kw">النسبة بين قيمتهما القانونية</span>.</li>
+                    <li><b>قانون جريشام (اختلال النسبتين):</b> إذا اختلفت النسبتان، فإن المعدن الذي ترتفع قيمته السوقية عن القانونية يميل إلى <span class="kw">الاختفاء من التداول</span> ويحل محله المعدن الرخيص، وبلغة قانون جريشام: <span class="kw">«النقد الرخيص يطرد النقد الجيد من التداول»</span>.</li>
+                    <li><b>تفسير اختفاء المعدن الجيد:</b> ارتفاع القيمة السوقية للذهب عن قيمته القانونية يغري الجمهور <span class="kw">بصهر الوحدات الذهبية</span> وبيعها سبائك بالسعر السوقي المرتفع وتحقيق ربح، فينتهي الأمر باختفاء المعدن الجيد ويتحول النظام فعلياً إلى <span class="kw">نظام المعدن الواحد</span> (ولم يستمر عملياً لأن الدول حددت نسباً مختلفة للمعدنين).</li>
+                    <li><b>مزايا نظام المعدنين:</b>
+                        <br>1. استخدام الفضة بجانب الذهب يزيد من <span class="kw">حجم القاعدة النقدية</span> فيصبح العرض الكلي للنقود أكبر، وتتمكن السلطات من مقابلة حاجات الجمهور بيسر.
+                        <br>2. يدخل شيئاً من <span class="kw">المرونة</span> في النظام النقدي، فتميل القوة الشرائية أو مستوى الأسعار إلى <span class="kw">الثبات النسبي</span> أكبر من نظام المعدن الواحد.
+                    </li>
+                </ul>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية (قانون جريشام):</b><br>
+                الحكومة كالت: الكرام الذهب يساوي 10 كرامات فضة (هاي النسبة القانونية). فجأة بالسوق غلى الذهب وصار الكرام يجيب 15 كرام فضة (هاي النسبة السوقية).<br>
+                الناس شراح تسوي؟ أي ليرة ذهب توكع بيدهم راح يضموها أو يموعوها ويبيعوها بالسوق السوداء لأن تربحهم، ويدفعون ديونهم ومشترياتهم بالفضة الرخيصة! فـ <b>"العملة الرخيصة (الفضة) طردت العملة الزينة (الذهب) من السوق"</b>!
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard8', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard8', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard8')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard8')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard8')">✅ حفظتها</button>
+        </div>
+    </div>
+
+    <!-- البطاقة 9: قاعدة النقد الائتمانية (نظام النقد الورقي الإلزامي) -->
+    <div class="card" id="mcard9">
+        <div class="card-header">
+            <h2 class="card-title">9. ثانياً: قاعدة النقد الائتمانية (النقد الورقي الإلزامي)</h2>
+            <span class="badge">ص 38 - 39</span>
+        </div>
+        <div class="content-box">
+            <div class="academic-view">
+                <ul>
+                    <li><b>المفهوم:</b> نظام لا تعرف في ظله وحدة التحاسب النقدية بالنسبة لسلعة معينة بل <span class="kw">تعرف بنفسها</span>، فأصبح النقد الورقي نقداً إلزامياً <span class="kw">غير قابل للتحويل إلى ذهب</span> أو معدن آخر، وأصبحت <span class="kw">نقود الودائع</span> النوع الوحيد للنقد الاختياري المتداول.</li>
+                    <li><b>آلية عمله:</b> يستمد كيانه من <span class="kw">القانون المحلي</span> داخل الحدود السياسية، وقيمته الخارجية تتحدد في أسواق الصرف الحرة <span class="kw">بالعرض والطلب</span>. وهو <span class="kw">نقد مدار</span> تتولى السلطات النقدية (البنك المركزي والخزانة) تحديد معدل تغيره لتحقيق أهداف اقتصادية والربط بين العرض النقدي والنشاط الاقتصادي.</li>
+                </ul>
+                <span class="sub-title">خصائص نظام النقد الورقي الإلزامي (9 خصائص):</span>
+                <ol>
+                    <li>يقع في <span class="kw">أرقى سلم التطور النقدي</span> وفعال في مواجهة الأزمات النقدية الخاصة.</li>
+                    <li>نظام <span class="kw">غير مقيد</span> يرتبط الإصدار فيه بحاجة الدولة الاقتصادية لا بحجم الذهب والمعادن.</li>
+                    <li><span class="kw">إلزامية التعامل</span> بالأوراق النقدية.</li>
+                    <li><span class="kw">مركزية إصدار</span> النقد القانوني لدى سلطة وحيدة هي <span class="kw">البنك المركزي</span>.</li>
+                    <li>الورقة النقدية لا قيمة لها بذاتها وإنما تستمد قيمتها من <span class="kw">قوة القانون</span>.</li>
+                    <li>القوة الشرائية <span class="kw">غير ثابتة</span> طالما بإمكان الحكومة إصدار الكمية المطلوبة عند الضرورة.</li>
+                    <li>تتمتع بقدرة <span class="kw">المرونة</span> على مقابلة الاحتياجات والمعاملات.</li>
+                    <li>نظام <span class="kw">محلي بطبيعته ومدار</span> يربط بين تغير الإصدار النقدي ومستوى النشاط الاقتصادي.</li>
+                    <li>المعاملات الداخلية تتم بنقود ورقية ذات قبول عام وثقة و<span class="kw">قوة إبراء غير محدودة</span> للوفاء بالديون، أما الخارجية فتحدد الدولة أسعار الصرف الخارجي لتحويل العملة الوطنية لأجنبية بسعر صرف ثابت وقابل للتحويل إلى ذهب.</li>
+                </ol>
+            </div>
+            <div class="street-view">
+                <b>☕ الفكرة بالعامية:</b><br>
+                هذا هو النظام اللي عايشين بيه اليوم! الـ 25 ألف دينار اللي بجيبك هي مجرد ورقة ما الها قيمة ذاتية، وما تكدر تروح للبنك المركزي تكوللهم "أعطوني بمكانها ذهب".<br>
+                زين ليش الناس تقبل بيها؟ لأن <b>القانون يجبر الكل يتعامل بيها (قوة إبراء غير محدودة)</b>، والبنك المركزي هو الوحيد اللي يطبعها ويديرها حسب حاجة الاقتصاد (نقد مدار ومرن)، بس عيبها إن الحكومة إذا طبعت منها هواي بدون حساب، قوتها الشرائية توكع!
+            </div>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn btn-acad" onclick="switchMode('mcard9', 'acad')">📖 للامتحان</button>
+            <button class="ctrl-btn btn-str" onclick="switchMode('mcard9', 'str')">☕ بالعامية</button>
+            <button class="ctrl-btn btn-cloze" onclick="toggleCloze('mcard9')">🔑 فراغات</button>
+            <button class="ctrl-btn btn-hide" onclick="toggleBlur('mcard9')">👁️ إخفاء</button>
+            <button class="ctrl-btn btn-done" onclick="toggleMastery('mcard9')">✅ حفظتها</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const STORAGE_KEY = 'money_banking_mastered_v1';
+
+    document.querySelectorAll('.kw').forEach(span => {
+        span.addEventListener('click', function() {
+            if (this.closest('.content-box').classList.contains('cloze-active')) {
+                this.classList.toggle('revealed');
+            }
+        });
+    });
+
+    function switchMode(cardId, mode) {
+        const card = document.getElementById(cardId);
+        const box = card.querySelector('.content-box');
+        const acad = card.querySelector('.academic-view');
+        const str = card.querySelector('.street-view');
+
+        box.classList.remove('blurred');
+
+        if (mode === 'acad') {
+            acad.style.display = 'block';
+            str.style.display = 'none';
+        } else {
+            acad.style.display = 'none';
+            str.style.display = 'block';
+        }
+    }
+
+    function toggleCloze(cardId) {
+        const card = document.getElementById(cardId);
+        const box = card.querySelector('.content-box');
+        switchMode(cardId, 'acad');
+        box.classList.toggle('cloze-active');
+        card.querySelectorAll('.kw').forEach(k => k.classList.remove('revealed'));
+    }
+
+    function toggleDiag(cardId) {
+        const card = document.getElementById(cardId);
+        const diag = card.querySelector('.diagram-view');
+        if (diag) {
+            diag.style.display = (diag.style.display === 'block') ? 'none' : 'block';
+        }
+    }
+
+    function toggleBlur(cardId) {
+        const card = document.getElementById(cardId);
+        const box = card.querySelector('.content-box');
+        box.classList.toggle('blurred');
+    }
+
+    function toggleMastery(cardId) {
+        const card = document.getElementById(cardId);
+        card.classList.toggle('mastered');
+        saveProgress();
+        updateProgressUI();
+    }
+
+    function updateProgressUI() {
+        const total = document.querySelectorAll('.card').length;
+        const mastered = document.querySelectorAll('.card.mastered').length;
+        const percent = Math.round((mastered / total) * 100);
+
+        document.getElementById('progressBar').style.width = percent + '%';
+        document.getElementById('progressCount').innerText = `${mastered} / ${total} بطاقات (${percent}%)`;
+    }
+
+    function saveProgress() {
+        const masteredIds = [];
+        document.querySelectorAll('.card.mastered').forEach(c => masteredIds.push(c.id));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(masteredIds));
+    }
+
+    function loadProgress() {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        saved.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('mastered');
+        });
+        updateProgressUI();
+    }
+
+    function resetProgress() {
+        localStorage.removeItem(STORAGE_KEY);
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('mastered'));
+        updateProgressUI();
+    }
+
+    function filterCards(type, btn) {
+        document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.card').forEach(card => {
+            const isMastered = card.classList.contains('mastered');
+            if (type === 'all') card.style.display = 'block';
+            else if (type === 'mastered') card.style.display = isMastered ? 'block' : 'none';
+            else if (type === 'unmastered') card.style.display = !isMastered ? 'block' : 'none';
+        });
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    loadProgress();
+</script>
+
+</body>
+</html>
